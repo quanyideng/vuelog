@@ -1,9 +1,10 @@
 <template>
-  <div id="blogs">
+  <div v-theme:column="'narrow'" id="blogs">
     <h1>博客总览</h1>
-    <div v-for="blog in blogs" :key="blog.id" class="blog">
-      <h2>{{blog.title}}</h2>
-      <article>{{blog.body}}</article>
+    <input type="text" v-model="search" placeholder="搜索">
+    <div v-for="blog in filterredBlogs" :key="blog.id" class="blog">
+      <h2 v-rainbow>{{blog.title | toUppetcase}}</h2>
+      <article>{{blog.body | snippet}}</article>
     </div>
   </div>
 </template>
@@ -14,7 +15,25 @@ export default {
   props: {},
   data () {
     return {
+      search: '',
       blogs: []
+    }
+  },
+  computed: {
+    filterredBlogs() {
+      return this.blogs.filter(blog => blog.title.match(this.search))
+    }
+  },
+  filters: {
+    toUppetcase (value) {
+      return value.toUpperCase()
+    }
+  },
+  directives: {
+    'rainbow': {
+      bind(el, binding, vnode) {
+        el.style.color = "#" + Math.random().toString(16).slice(2, 8)
+      }
     }
   },
   methods: {},
@@ -31,7 +50,7 @@ export default {
 </script>
 <style>
 #blogs {
-  width: 800px;
+  max-width: 800px;
   margin: 0 auto;
 }
 .blog {
