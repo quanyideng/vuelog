@@ -3,7 +3,9 @@
     <h1>博客总览</h1>
     <input type="text" v-model="search" placeholder="搜索">
     <div v-for="blog in filterredBlogs" :key="blog.id" class="blog">
-      <h2 v-rainbow>{{blog.title | toUppetcase}}</h2>
+      <router-link :to="'/blog/' + blog.id" >
+        <h2 v-rainbow>{{blog.title | toUppetcase}}</h2>
+      </router-link>
       <article>{{blog.body | snippet}}</article>
     </div>
   </div>
@@ -48,7 +50,7 @@ export default {
   mounted () {}
 }
 </script>
-<style>
+<style scoped>
 #blogs {
   max-width: 800px;
   margin: 0 auto;
@@ -59,5 +61,15 @@ export default {
   margin: 20px 0;
   box-sizing: border-box;
   background: #eee;
+  border: 1px dotted #aaa;
+}
+#blogs a {
+  color: #444;
+  text-decoration: none;
+}
+input[type="text"] {
+  padding: 8px;
+  width: 100%;
+  box-sizing: border-box;
 }
 </style>

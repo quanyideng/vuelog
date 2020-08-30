@@ -22,7 +22,7 @@ export default {
   mounted () {}
 }
 </script>
-<style>
+<style scoped>
 ul {
   list-style-type: none;
   text-align: center;
