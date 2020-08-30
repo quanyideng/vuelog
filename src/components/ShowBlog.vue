@@ -52,6 +52,7 @@ export default {
 #blogs {
   max-width: 800px;
   margin: 0 auto;
+  text-align: left;
 }
 .blog {
   padding: 20px;
