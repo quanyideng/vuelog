@@ -6,7 +6,7 @@
       <router-link :to="'/blog/' + blog.id" >
         <h2 v-rainbow>{{blog.title | toUppetcase}}</h2>
       </router-link>
-      <article>{{blog.body | snippet}}</article>
+      <article>{{blog.content | snippet}}</article>
     </div>
   </div>
 </template>
@@ -40,10 +40,20 @@ export default {
   },
   methods: {},
   created () {
-    this.$http.get('https://jsonplaceholder.typicode.com/posts')
+    this.$http.get("https://vueblog-f782b.firebaseio.com/posts.json")
       .then(res => {
         // console.log('res', res);
-        this.blogs = res.body.slice(0, 10)
+        // this.blogs = res.body.slice(0, 10)
+        // console.log('this.blogs', this.blogs);
+        return res.json()
+      }).then(res => {
+        let blogsArray = []
+        for (let key in res) {
+          // console.log('key', res[key]);
+          res[key].id = key
+          blogsArray.push(res[key])
+        }
+        this.blogs = blogsArray
         // console.log('this.blogs', this.blogs);
       })
   },
@@ -60,8 +70,9 @@ export default {
   padding: 20px;
   margin: 20px 0;
   box-sizing: border-box;
-  background: #eee;
-  border: 1px dotted #aaa;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-shadow: 1px 1px 10px #999;
 }
 #blogs a {
   color: #444;

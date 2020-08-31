@@ -1,7 +1,7 @@
 <template>
-  <div class="add-blog">
+  <div class="edit-blog">
     <form v-if="!submitted">
-      <h2>添加博客</h2>
+      <h2>编辑博客</h2>
       <label for="title">博客标题：</label>
       <input type="text" v-model="blog.title" required name id="title" />
       <label for="content" class="content">博客内容：</label>
@@ -22,7 +22,7 @@
       <select v-model="blog.author">
         <option v-for="author in authors" :key="author">{{author}}</option>
       </select>
-      <button @click.prevent="post">添加博客</button>
+      <button @click.prevent="post">编辑博客</button>
     </form>
     <div v-else>
       <h3>您的博客已发布成功!</h3>
@@ -47,6 +47,7 @@ export default {
   props: {},
   data() {
     return {
+      id: this.$route.params.id,
       blog: {
         title: "",
         content: "",
@@ -67,12 +68,22 @@ export default {
           // this.$route.push({ path: "/" });
         });
     },
+    fetchData() {
+      // console.log('this.id', this.id);
+      this.$http.get('https://vueblog-f782b.firebaseio.com/posts/' + this.id + ".json")
+        .then(res => {
+          console.log('res', res);
+          this.blog = res.body
+        })
+    }
   },
-  mounted() {},
+  created() {
+    this.fetchData()
+  },
 };
 </script>
 <style scoped>
-.add-blog {
+.edit-blog {
   display: flex;
   justify-content: center;
   align-items: center;

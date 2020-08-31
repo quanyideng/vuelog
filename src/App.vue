@@ -3,7 +3,9 @@
     <!-- <add-blog></add-blog>
     <show-blog></show-blog> -->
     <blog-header></blog-header>
-    <router-view></router-view>
+    <!-- <keep-alive exclude="EditBlog"> -->
+      <router-view></router-view>
+    <!-- </keep-alive> -->
   </div>
 </template>
 
@@ -11,13 +13,15 @@
 import BlogHeader from './components/BlogHeader'
 import AddBlog from './components/AddBlog'
 import ShowBlog from './components/ShowBlog'
+import EditBlog from './components/EditBlog'
 
 export default {
   name: 'App',
   components: {
     AddBlog,
     ShowBlog,
-    BlogHeader
+    BlogHeader,
+    EditBlog
   }
 }
 </script>
