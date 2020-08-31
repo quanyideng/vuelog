@@ -3,9 +3,9 @@
     <!-- <add-blog></add-blog>
     <show-blog></show-blog> -->
     <blog-header></blog-header>
-    <!-- <keep-alive exclude="EditBlog"> -->
+    <keep-alive include="ShowBlog">
       <router-view></router-view>
-    <!-- </keep-alive> -->
+    </keep-alive>
   </div>
 </template>
 

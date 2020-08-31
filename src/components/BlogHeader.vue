@@ -39,7 +39,7 @@ a {
   border-radius: 5px;
 }
 nav {
-  background: crimson;
+  background: #1e1e1e;
   padding: 30px 0;
   margin-bottom: 40px;
 }

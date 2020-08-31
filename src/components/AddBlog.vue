@@ -2,7 +2,8 @@
   <div class="add-blog">
     <form v-if="!submitted">
       <h2>添加博客</h2>
-      <label for="title">博客标题：</label>
+      <label for="title" class="title">博客标题：</label>
+      <br/>
       <input type="text" v-model="blog.title" required name id="title" />
       <label for="content" class="content">博客内容：</label>
       <textarea v-model="blog.content" id="content" name="content" rows="8" cols="53"></textarea>
@@ -62,8 +63,9 @@ export default {
       this.$http
         .post("https://vueblog-f782b.firebaseio.com/posts.json", this.blog)
         .then((res) => {
-          console.log("res", res);
+          // console.log("res", res);
           this.submitted = true;
+          this.$eventBus.$emit('publishBlog')
           // this.$route.push({ path: "/" });
         });
     },
@@ -93,7 +95,10 @@ textarea {
 }
 label.content {
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+}
+label.title {
+  display: block;
 }
 #title {
   margin-bottom: 20px;

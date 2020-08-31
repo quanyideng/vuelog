@@ -38,9 +38,9 @@ export default {
       }
     }
   },
-  methods: {},
-  created () {
-    this.$http.get("https://vueblog-f782b.firebaseio.com/posts.json")
+  methods: {
+    fetchData () {
+      this.$http.get("https://vueblog-f782b.firebaseio.com/posts.json")
       .then(res => {
         // console.log('res', res);
         // this.blogs = res.body.slice(0, 10)
@@ -56,8 +56,27 @@ export default {
         this.blogs = blogsArray
         // console.log('this.blogs', this.blogs);
       })
+    }
   },
-  mounted () {}
+  created () {
+    this.fetchData()
+  },
+  activated() {
+    
+  },
+  deactivated() {
+
+  },
+  mounted () {
+    this.$eventBus.$on('editToUpdate', () => {
+      console.log('editToUpdate');
+      this.fetchData()
+    })
+    this.$eventBus.$on('publishBlog', () => {
+      console.log('publishBlog');
+      this.fetchData()
+    })
+  }
 }
 </script>
 <style scoped>
@@ -72,7 +91,7 @@ export default {
   box-sizing: border-box;
   border-radius: 5px;
   border: 1px solid #ccc;
-  box-shadow: 1px 1px 10px #999;
+  box-shadow: 1px 1px 15px #999;
 }
 #blogs a {
   color: #444;

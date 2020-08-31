@@ -5,7 +5,7 @@
       <label for="title">博客标题：</label>
       <input type="text" v-model="blog.title" required name id="title" />
       <label for="content" class="content">博客内容：</label>
-      <textarea v-model="blog.content" id="content" name="content" rows="8" cols="53"></textarea>
+      <textarea v-model="blog.content" id="content" name="content" rows="10" cols="60"></textarea>
       <div id="checkbox">
         <label>分类：</label>
         <input type="checkbox" v-model="blog.categories" value="Vue.js" />
@@ -22,10 +22,10 @@
       <select v-model="blog.author">
         <option v-for="author in authors" :key="author">{{author}}</option>
       </select>
-      <button @click.prevent="post">编辑博客</button>
+      <button @click.prevent="put">保存</button>
     </form>
     <div v-else>
-      <h3>您的博客已发布成功!</h3>
+      <h3>您的博客编辑成功!</h3>
       <div id="preview">
         <h3>博客预览</h3>
         <p>博客标题: {{blog.title}}</p>
@@ -59,12 +59,13 @@ export default {
     };
   },
   methods: {
-    post() {
+    put() {
       this.$http
-        .post("https://vueblog-f782b.firebaseio.com/posts.json", this.blog)
+        .put('https://vueblog-f782b.firebaseio.com/posts/' + this.id + ".json", this.blog)
         .then((res) => {
           console.log("res", res);
           this.submitted = true;
+          this.$eventBus.$emit('editToUpdate')
           // this.$route.push({ path: "/" });
         });
     },

@@ -8,7 +8,7 @@ import routes from './routes'
 
 Vue.use(VueResource)
 Vue.use(VueRouter)
-
+Vue.prototype.$eventBus = new Vue()
 Vue.config.productionTip = false
 
 //自定义全局指令

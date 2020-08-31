@@ -1,5 +1,5 @@
 <template>
-  <div id="blog">
+  <div id="blog" v-show="showBlog">
     <h1>{{blog.title}}</h1>
     <article>{{blog.content}}</article>
     <p>作者： {{blog.author}}</p>
@@ -20,6 +20,7 @@ export default {
   props: {},
   data () {
     return {
+      showBlog: false,
       id: this.$route.params.id,
       blog: {}
     }
@@ -29,7 +30,7 @@ export default {
       this.$http.delete('https://vueblog-f782b.firebaseio.com/posts/' + this.id + ".json")
       .then(res => {
         console.log('deleted successfully');
-        this.$route.push({path: "/"})
+        this.$router.push({path: "/"})
       })
     }
   },
@@ -42,6 +43,7 @@ export default {
       })
       .then(res => {
         this.blog = res
+        this.showBlog = true
       })
   }
 }
