@@ -41,6 +41,7 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
   name: "AddBlog",
   components: {},
@@ -60,21 +61,20 @@ export default {
   },
   methods: {
     put() {
-      this.$http
-        .put('https://vueblog-f782b.firebaseio.com/posts/' + this.id + ".json", this.blog)
+      // this.$http.put('https://vueblog-f782b.firebaseio.com/posts/' + this.id + ".json", this.blog)
+      axios.put('/posts/' + this.id + ".json", this.blog)
         .then((res) => {
           console.log("res", res);
           this.submitted = true;
           this.$eventBus.$emit('editToUpdate')
-          // this.$route.push({ path: "/" });
         });
     },
     fetchData() {
-      // console.log('this.id', this.id);
-      this.$http.get('https://vueblog-f782b.firebaseio.com/posts/' + this.id + ".json")
+      // this.$http.get('https://vueblog-f782b.firebaseio.com/posts/' + this.id + ".json")
+      axios.get('/posts/' + this.id + ".json")
         .then(res => {
           console.log('res', res);
-          this.blog = res.body
+          this.blog = res.data
         })
     }
   },

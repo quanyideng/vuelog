@@ -14,6 +14,7 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
   name: "Blog",
   components: {},
@@ -27,19 +28,22 @@ export default {
   },
   methods: {
     deleteBlog () {
-      this.$http.delete('https://vueblog-f782b.firebaseio.com/posts/' + this.id + ".json")
+      // this.$http.delete('https://vueblog-f782b.firebaseio.com/posts/' + this.id + ".json")
+      axios.delete('https://vueblog-f782b.firebaseio.com/posts/' + this.id + ".json")
       .then(res => {
         console.log('deleted successfully');
+        this.$eventBus.$emit('editToUpdate')
         this.$router.push({path: "/"})
       })
     }
   },
   created () {
-    this.$http.get('https://vueblog-f782b.firebaseio.com/posts/' + this.id + ".json")
+    // this.$http.get('https://vueblog-f782b.firebaseio.com/posts/' + this.id + ".json")
+    axios.get('https://vueblog-f782b.firebaseio.com/posts/' + this.id + ".json")
       .then(res => {
         console.log('res', res);
         // this.blog = res.body
-        return res.json()
+        return res.data
       })
       .then(res => {
         this.blog = res

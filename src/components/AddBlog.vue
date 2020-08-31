@@ -42,6 +42,7 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
   name: "AddBlog",
   components: {},
@@ -60,10 +61,9 @@ export default {
   },
   methods: {
     post() {
-      this.$http
-        .post("https://vueblog-f782b.firebaseio.com/posts.json", this.blog)
+      // this.$http.post("https://vueblog-f782b.firebaseio.com/posts.json", this.blog)
+      axios.post("/posts.json", this.blog)
         .then((res) => {
-          // console.log("res", res);
           this.submitted = true;
           this.$eventBus.$emit('publishBlog')
           // this.$route.push({ path: "/" });

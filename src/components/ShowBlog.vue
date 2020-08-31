@@ -11,6 +11,7 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
   name: "ShowBlog",
   components: {},
@@ -40,21 +41,17 @@ export default {
   },
   methods: {
     fetchData () {
-      this.$http.get("https://vueblog-f782b.firebaseio.com/posts.json")
+      // this.$http.get("https://vueblog-f782b.firebaseio.com/posts.json")
+      axios.get("/posts.json")
       .then(res => {
-        // console.log('res', res);
-        // this.blogs = res.body.slice(0, 10)
-        // console.log('this.blogs', this.blogs);
-        return res.json()
+        return res.data
       }).then(res => {
         let blogsArray = []
         for (let key in res) {
-          // console.log('key', res[key]);
           res[key].id = key
           blogsArray.push(res[key])
         }
         this.blogs = blogsArray
-        // console.log('this.blogs', this.blogs);
       })
     }
   },

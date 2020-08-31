@@ -2,11 +2,15 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-import VueResource from 'vue-resource'
+// import VueResource from 'vue-resource'
 import VueRouter from 'vue-router'
 import routes from './routes'
+import axios from 'axios'
 
-Vue.use(VueResource)
+//全局配置 axios
+axios.defaults.baseURL = 'https://vueblog-f782b.firebaseio.com/'
+
+// Vue.use(VueResource)
 Vue.use(VueRouter)
 Vue.prototype.$eventBus = new Vue()
 Vue.config.productionTip = false
