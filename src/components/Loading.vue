@@ -1,5 +1,7 @@
 <template>
-  <div class="loading" v-show="loading">拼命加载中...</div>
+  <div v-show="loading" class="loading-wrapper">
+    <div class="loading">拼命加载中...</div>
+  </div>
 </template>
 <script>
 export default {
@@ -26,6 +28,15 @@ export default {
   position: fixed;
   transform: translate(-50%, -50%);
   top: 50%;
-  left: 50%
+  left: 50%;
+  cursor: wait;
+}
+.loading-wrapper {
+  position: fixed;
+  right: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  cursor: wait;
 }
 </style>

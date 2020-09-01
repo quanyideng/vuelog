@@ -1,19 +1,24 @@
 <template>
   <div>
-    <!-- <div class="loading" v-show="isLoading">拼命加载中...</div> -->
     <loading :loading="isLoading"/>
     <div v-show="!isLoading" v-theme:column="'narrow'" id="blogs">
       <h1>博客总览</h1>
       <div class="input-wrapper">
-        <input type="text" v-model="search" placeholder="搜索">
+        <input type="text" v-model="search" placeholder="搜索" ref="inputFocus">
         <i class="iconfont icon-search"></i>
         <i v-show="search" class="iconfont icon-clear" @click="clear"></i>
       </div>
-      <div v-for="blog in filterredBlogs" :key="blog.id" class="blog">
-        <router-link :to="'/blog/' + blog.id" >
+      <div v-for="blog in filterredBlogs" :key="blog.objectId" class="blog">
+        <router-link :to="'/blog/' + blog.objectId" >
           <h2 v-rainbow>{{blog.title | toUppetcase}}</h2>
+          <article>{{blog.content | snippet}}</article>
         </router-link>
-        <article>{{blog.content | snippet}}</article>
+      </div>
+      <div class="load-more" v-show="blur && !zero">
+        <span>{{noMoreBlog ? '没有更多了' : '点击加载更多'}}</span>
+      </div>
+      <div class="load-more" v-show="zero">
+        <span>还没有博客哦</span>
       </div>
     </div>
   </div>
@@ -29,6 +34,9 @@ export default {
   props: {},
   data () {
     return {
+      zero: false,
+      blur: true,
+      noMoreBlog: false,
       isLoading: true,
       search: '',
       blogs: []
@@ -36,6 +44,11 @@ export default {
   },
   computed: {
     filterredBlogs() {
+      if(this.blogs.length === 0) {
+        this.zero = true
+      } else {
+        this.zero = false
+      }
       return this.blogs.filter(blog => blog.title.match(this.search))
     }
   },
@@ -55,25 +68,38 @@ export default {
     clear () {
       this.search = ''
     },
-    fetchData () {
+    fetchData (count) {
       // this.$http.get("https://vueblog-f782b.firebaseio.com/posts.json")
-      axios.get("/posts.json")
-      .then(res => {
-        return res.data
-      }).then(res => {
-        let blogsArray = []
-        for (let key in res) {
-          res[key].id = key
-          blogsArray.push(res[key])
-        }
-        this.blogs = blogsArray
-        this.isLoading = false
+      // axios.get("/posts.json")
+      // .then(res => {
+      //   return res.data
+      // }).then(res => {
+      //   let blogsArray = []
+      //   for (let key in res) {
+      //     res[key].id = key
+      //     blogsArray.push(res[key])
+      //   }
+      //   this.blogs = blogsArray
+      //   this.isLoading = false
         // console.log('isLoading', this.isLoading);
-      })
+      // })
+      const query = this.$Bmob.Query("posts");
+      query.limit(count)
+      query.order("-createdAt", 'desc')
+      query.find()
+        .then(res => {
+          // console.log('res', res);
+          this.blogs = res
+          this.isLoading = false
+          if(res.length < count) {
+            this.noMoreBlog = true
+          }
+        });
     }
   },
   created () {
-    this.fetchData()
+    // 每次加载 5 条数据
+    this.fetchData(5)
   },
   activated() {
     
@@ -84,12 +110,20 @@ export default {
   mounted () {
     this.$eventBus.$on('editToUpdate', () => {
       console.log('editToUpdate');
-      this.fetchData()
+      this.fetchData(5)
     })
     this.$eventBus.$on('publishBlog', () => {
       console.log('publishBlog');
-      this.fetchData()
+      this.fetchData(5)
     })
+    this.$refs.inputFocus.onfocus = () => {
+      this.blur = false
+      console.log('focus', this.blur);
+    }
+    this.$refs.inputFocus.onblur = () => {
+      this.blur = true
+      console.log('blur', this.blur);
+    }
   }
 }
 </script>
@@ -99,7 +133,7 @@ export default {
   margin: 0 auto;
   text-align: left;
 }
-.blog {
+.blog, .load-more {
   padding: 20px;
   margin: 20px 0;
   box-sizing: border-box;
@@ -128,8 +162,12 @@ input[type="text"] {
 }
 .icon-clear {
   right: 10px;
+  cursor: pointer;
 }
 .input-wrapper {
   position: relative;
+}
+.load-more {
+  cursor: pointer;
 }
 </style>

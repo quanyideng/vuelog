@@ -18,11 +18,16 @@
         <label>Angular4</label>
       </div>
       <br />
-      <label>作者：</label>
-      <select v-model="blog.author">
-        <option v-for="author in authors" :key="author">{{author}}</option>
-      </select>
-      <button @click.prevent="put">保存</button>
+      <div class="footer">
+        <div>
+          <label>作者：</label>
+          <select v-model="blog.author">
+            <option v-for="author in authors" :key="author">{{author}}</option>
+          </select>
+        </div>
+
+        <button @click.prevent="put">保存</button>
+      </div>
     </form>
     <div v-else>
       <h3>您的博客编辑成功!</h3>
@@ -30,7 +35,7 @@
         <h3>博客预览</h3>
         <p>博客标题: {{blog.title}}</p>
         <p>博客内容:</p>
-        <p>{{blog.content}}</p>
+        <article>{{blog.content}}</article>
         <p>博客分类:</p>
         <ul>
           <li v-for="category in blog.categories" :key="category">{{category}}</li>
@@ -41,7 +46,7 @@
   </div>
 </template>
 <script>
-import axios from 'axios'
+import axios from "axios";
 export default {
   name: "AddBlog",
   components: {},
@@ -62,24 +67,45 @@ export default {
   methods: {
     put() {
       // this.$http.put('https://vueblog-f782b.firebaseio.com/posts/' + this.id + ".json", this.blog)
-      axios.put('/posts/' + this.id + ".json", this.blog)
+      // axios.put('/posts/' + this.id + ".json", this.blog)
+      //   .then((res) => {
+      //     console.log("res", res);
+      //     this.submitted = true;
+      //     this.$eventBus.$emit('editToUpdate')
+      //   });
+      const query = this.$Bmob.Query("posts");
+      query.set("id", this.id); //需要修改的objectId
+      query.set('title', this.blog.title)
+      query.set('content', this.blog.content)
+      query.set('title', this.blog.title)
+      query.set('categories', this.blog.categories)
+      query.set('author', this.blog.author)
+      query
+        .save()
         .then((res) => {
-          console.log("res", res);
+          console.log(res);
           this.submitted = true;
           this.$eventBus.$emit('editToUpdate')
+        })
+        .catch((err) => {
+          console.log(err);
         });
     },
     fetchData() {
       // this.$http.get('https://vueblog-f782b.firebaseio.com/posts/' + this.id + ".json")
-      axios.get('/posts/' + this.id + ".json")
+      // axios.get("/posts/" + this.id + ".json").then((res) => {
+      //   console.log("res", res);
+      //   this.blog = res.data;
+      // });
+      const query = this.$Bmob.Query("posts");
+      query.get(this.id)
         .then(res => {
-          console.log('res', res);
-          this.blog = res.data
+          this.blog = res
         })
-    }
+    },
   },
   created() {
-    this.fetchData()
+    this.fetchData();
   },
 };
 </script>
@@ -93,10 +119,11 @@ export default {
 }
 label,
 textarea {
-  /* font-size: .8rem; */
+  font-size: .8rem;
   letter-spacing: 1px;
 }
 textarea {
+  height: auto;
   padding: 10px;
   line-height: 1.5;
   border-radius: 5px;
@@ -106,9 +133,13 @@ textarea {
 }
 label.content {
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 #title {
   margin-bottom: 20px;
+}
+.footer {
+  display: flex;
+  justify-content: space-between;
 }
 </style>

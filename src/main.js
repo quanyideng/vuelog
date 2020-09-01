@@ -9,14 +9,11 @@ import axios from 'axios'
 import Bmob from "hydrogen-js-sdk";
 import './icon/style.css'
 
-Bmob.initialize("46c29ec28e8de46aec341e5817b60a3d", "7c474f55348145248fbaa45826b004b9");
+Bmob.initialize("4d9617821246628a", "703458");
 Vue.prototype.$Bmob = Bmob
 
 //全局配置 axios
 axios.defaults.baseURL = 'https://vueblog-f782b.firebaseio.com/'
-// axios.defaults.headers.post['Content-Type'] = 'application/json'
-// axios.defaults.headers.post['X-Bmob-Application-Id'] = 'X-Bmob-Application-Id'
-// axios.defaults.headers.post['X-Bmob-REST-API-Key'] = 'X-Bmob-REST-API-Key'
 
 // Vue.use(VueResource)
 Vue.use(VueRouter)
@@ -40,7 +37,7 @@ Vue.directive('theme', {
 
     if (binding.arg == 'column') {
       // el.style.background = "#6677cc"
-      el.style.padding = "50px"
+      el.style.padding = "80px"
     }
   }
 })

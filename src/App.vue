@@ -29,15 +29,15 @@ export default {
 <style>
 body {
   margin: 0;
-  position: relative;
+  /* position: relative; */
 }
 #app {
-  position: fixed;
+  /* position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   overflow: hidden;
-  overflow-y: auto;
+  overflow-y: auto; */
 }
 </style>
