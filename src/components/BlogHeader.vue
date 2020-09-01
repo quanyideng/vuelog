@@ -35,13 +35,17 @@ li {
 a {
   color: #fff;
   text-decoration: none;
-  padding: 12px;
+  padding: 16px;
   border-radius: 5px;
 }
 nav {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  right: 0;
   background: #1e1e1e;
-  padding: 30px 0;
-  margin-bottom: 40px;
+  padding: 15px 0;
 }
 
 .router-link-active {

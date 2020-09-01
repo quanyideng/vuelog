@@ -1,7 +1,11 @@
 <template>
   <div v-theme:column="'narrow'" id="blogs">
     <h1>博客总览</h1>
-    <input type="text" v-model="search" placeholder="搜索">
+    <div class="input-wrapper">
+      <input type="text" v-model="search" placeholder="搜索">
+      <i class="iconfont icon-search"></i>
+      <i v-show="search" class="iconfont icon-clear" @click="clear"></i>
+    </div>
     <div v-for="blog in filterredBlogs" :key="blog.id" class="blog">
       <router-link :to="'/blog/' + blog.id" >
         <h2 v-rainbow>{{blog.title | toUppetcase}}</h2>
@@ -12,6 +16,7 @@
 </template>
 <script>
 import axios from 'axios'
+import loading from 'vue-loading';
 export default {
   name: "ShowBlog",
   components: {},
@@ -37,9 +42,13 @@ export default {
       bind(el, binding, vnode) {
         el.style.color = "#" + Math.random().toString(16).slice(2, 8)
       }
-    }
+    },
+    loading
   },
   methods: {
+    clear () {
+      this.search = ''
+    },
     fetchData () {
       // this.$http.get("https://vueblog-f782b.firebaseio.com/posts.json")
       axios.get("/posts.json")
@@ -96,7 +105,23 @@ export default {
 }
 input[type="text"] {
   padding: 8px;
+  padding-left: 30px;
   width: 100%;
   box-sizing: border-box;
+}
+.icon-search,
+.icon-clear {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.icon-search {
+  left: 10px;
+}
+.icon-clear {
+  right: 10px;
+}
+.input-wrapper {
+  position: relative;
 }
 </style>

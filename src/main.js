@@ -6,9 +6,17 @@ import App from './App'
 import VueRouter from 'vue-router'
 import routes from './routes'
 import axios from 'axios'
+import Bmob from "hydrogen-js-sdk";
+import './icon/style.css'
+
+Bmob.initialize("46c29ec28e8de46aec341e5817b60a3d", "7c474f55348145248fbaa45826b004b9");
+Vue.prototype.$Bmob = Bmob
 
 //全局配置 axios
 axios.defaults.baseURL = 'https://vueblog-f782b.firebaseio.com/'
+// axios.defaults.headers.post['Content-Type'] = 'application/json'
+// axios.defaults.headers.post['X-Bmob-Application-Id'] = 'X-Bmob-Application-Id'
+// axios.defaults.headers.post['X-Bmob-REST-API-Key'] = 'X-Bmob-REST-API-Key'
 
 // Vue.use(VueResource)
 Vue.use(VueRouter)
@@ -27,12 +35,12 @@ Vue.directive('theme', {
     if (binding.value == 'wide') {
       el.style.maxWidth = '1260px';
     } else if (binding.value == 'narrow') {
-      el.style.maxWidth = "560px"
+      el.style.maxWidth = "660px"
     }
 
     if (binding.arg == 'column') {
       // el.style.background = "#6677cc"
-      el.style.padding = "20px"
+      el.style.padding = "50px"
     }
   }
 })
@@ -48,7 +56,10 @@ Vue.filter('snippet', function (value) {
 
 const router = new VueRouter({
   mode: 'history',
-  routes
+  routes,
+  scrollBehavior (to, from, savedPosition) {
+    return { x: 0, y: 0 }
+  },  
 })
 
 /* eslint-disable no-new */

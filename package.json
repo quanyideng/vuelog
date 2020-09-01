@@ -11,7 +11,11 @@
   },
   "dependencies": {
     "axios": "^0.20.0",
+    "bmob": "^2.1.0",
+    "hydrogen-js-sdk": "^2.2.4",
+    "leancloud-storage": "^4.6.1",
     "vue": "^2.5.2",
+    "vue-loading": "^0.1.4",
     "vue-resource": "^1.5.1",
     "vue-router": "^3.4.3"
   },

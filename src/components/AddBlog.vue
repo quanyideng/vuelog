@@ -4,7 +4,7 @@
       <h2>添加博客</h2>
       <label for="title" class="title">博客标题：</label>
       <br/>
-      <input type="text" v-model="blog.title" required name id="title" />
+      <input type="text" v-model="blog.title" required id="title" />
       <label for="content" class="content">博客内容：</label>
       <textarea v-model="blog.content" id="content" name="content" rows="8" cols="53"></textarea>
       <div id="checkbox">
@@ -62,8 +62,10 @@ export default {
   methods: {
     post() {
       // this.$http.post("https://vueblog-f782b.firebaseio.com/posts.json", this.blog)
-      axios.post("/posts.json", this.blog)
+      // axios.post("/posts.json", this.blog)
+      axios.post("https://api2.bmob.cn/1/classes/posts", this.blog)
         .then((res) => {
+          console.log('res', res);
           this.submitted = true;
           this.$eventBus.$emit('publishBlog')
           // this.$route.push({ path: "/" });
@@ -79,6 +81,7 @@ export default {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  padding-bottom: 40px;
 }
 label,
 textarea {
@@ -86,12 +89,14 @@ textarea {
   letter-spacing: 1px;
 }
 textarea {
+  height: 400px;
+  width: 500px;
   padding: 10px;
   line-height: 1.5;
   border-radius: 5px;
   border: 1px solid #ccc;
   box-shadow: 1px 1px 10px #999;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 label.content {
   display: block;
@@ -102,5 +107,9 @@ label.title {
 }
 #title {
   margin-bottom: 20px;
+  padding: 5px 0;
+  padding-left: 10px;
+  width: calc(100% - 10px);
+
 }
 </style>

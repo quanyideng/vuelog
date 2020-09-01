@@ -27,5 +27,17 @@ export default {
 </script>
 
 <style>
-
+body {
+  margin: 0;
+  position: relative;
+}
+#app {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  overflow-y: auto;
+}
 </style>
