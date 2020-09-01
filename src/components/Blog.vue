@@ -1,26 +1,33 @@
 <template>
-  <div id="blog" v-show="showBlog">
-    <h1>{{blog.title}}</h1>
-    <article>{{blog.content}}</article>
-    <p>作者： {{blog.author}}</p>
-    <p>分类：</p>
-    <ul>
-      <li v-for="category in blog.categories" :key="category">
-        {{category}}
-      </li>
-    </ul>
-    <button @click="deleteBlog()">删除</button>
-    <router-link :to="'/edit/' + id">编辑</router-link>
+  <div>
+    <Loading :loading="loading" />
+    <div id="blog" v-show="showBlog">
+      <h1>{{blog.title}}</h1>
+      <article>{{blog.content}}</article>
+      <p>作者： {{blog.author}}</p>
+      <p>分类：</p>
+      <ul>
+        <li v-for="category in blog.categories" :key="category">
+          {{category}}
+        </li>
+      </ul>
+      <button @click="deleteBlog()">删除</button>
+      <router-link :to="'/edit/' + id">编辑</router-link>
+    </div>
   </div>
 </template>
 <script>
+import Loading from './Loading'
 import axios from 'axios'
 export default {
   name: "Blog",
-  components: {},
+  components: {
+    Loading
+  },
   props: {},
   data () {
     return {
+      loading: true,
       showBlog: false,
       id: this.$route.params.id,
       blog: {}
@@ -48,6 +55,7 @@ export default {
       .then(res => {
         this.blog = res
         this.showBlog = true
+        this.loading = false
       })
   }
 }
@@ -55,7 +63,7 @@ export default {
 <style scoped>
 #blog {
   max-width: 960px;
-  margin: 0 auto;
+  margin: 80px auto;
   padding: 20px;
   background: #eee;
   border: 1px solid #ccc;

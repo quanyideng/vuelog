@@ -1,28 +1,35 @@
 <template>
-  <div v-theme:column="'narrow'" id="blogs">
-    <h1>博客总览</h1>
-    <div class="input-wrapper">
-      <input type="text" v-model="search" placeholder="搜索">
-      <i class="iconfont icon-search"></i>
-      <i v-show="search" class="iconfont icon-clear" @click="clear"></i>
-    </div>
-    <div v-for="blog in filterredBlogs" :key="blog.id" class="blog">
-      <router-link :to="'/blog/' + blog.id" >
-        <h2 v-rainbow>{{blog.title | toUppetcase}}</h2>
-      </router-link>
-      <article>{{blog.content | snippet}}</article>
+  <div>
+    <!-- <div class="loading" v-show="isLoading">拼命加载中...</div> -->
+    <loading :loading="isLoading"/>
+    <div v-show="!isLoading" v-theme:column="'narrow'" id="blogs">
+      <h1>博客总览</h1>
+      <div class="input-wrapper">
+        <input type="text" v-model="search" placeholder="搜索">
+        <i class="iconfont icon-search"></i>
+        <i v-show="search" class="iconfont icon-clear" @click="clear"></i>
+      </div>
+      <div v-for="blog in filterredBlogs" :key="blog.id" class="blog">
+        <router-link :to="'/blog/' + blog.id" >
+          <h2 v-rainbow>{{blog.title | toUppetcase}}</h2>
+        </router-link>
+        <article>{{blog.content | snippet}}</article>
+      </div>
     </div>
   </div>
 </template>
 <script>
+import Loading from './Loading'
 import axios from 'axios'
-import loading from 'vue-loading';
 export default {
   name: "ShowBlog",
-  components: {},
+  components: {
+    Loading
+  },
   props: {},
   data () {
     return {
+      isLoading: true,
       search: '',
       blogs: []
     }
@@ -42,8 +49,7 @@ export default {
       bind(el, binding, vnode) {
         el.style.color = "#" + Math.random().toString(16).slice(2, 8)
       }
-    },
-    loading
+    }
   },
   methods: {
     clear () {
@@ -61,6 +67,8 @@ export default {
           blogsArray.push(res[key])
         }
         this.blogs = blogsArray
+        this.isLoading = false
+        // console.log('isLoading', this.isLoading);
       })
     }
   },

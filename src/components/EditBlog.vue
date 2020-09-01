@@ -89,6 +89,7 @@ export default {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  margin: 80px auto;
 }
 label,
 textarea {
