@@ -65,7 +65,7 @@ npm run build
 
 **添加博客**
 
-![publish](https://s1.ax1x.com/2020/09/02/wSvwNQ.png
+![publish](https://s1.ax1x.com/2020/09/02/wSvwNQ.png)
 
 **博客详情**
 
