@@ -25,7 +25,6 @@
 </template>
 <script>
 import Loading from './Loading'
-import axios from 'axios'
 import md from "markdown";
 export default {
   name: "ShowBlog",
@@ -74,8 +73,10 @@ export default {
         .then(res => {
           this.blogs = res
           this.isLoading = false
-          if(res.length < 5) {
+          if (res.length < 5) {
             this.noMoreBlog = true
+          } else {
+            this.noMoreBlog = false
           }
         });
     },

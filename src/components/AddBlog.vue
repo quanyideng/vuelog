@@ -56,7 +56,6 @@
   </div>
 </template>
 <script>
-import axios from "axios";
 import md from "markdown";
 export default {
   name: "AddBlog",

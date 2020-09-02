@@ -16,7 +16,6 @@
 </template>
 <script>
 import Loading from "./Loading";
-import axios from "axios";
 import md from "markdown";
 export default {
   name: "Blog",
