@@ -31,17 +31,6 @@
     </form>
     <div v-else>
       <h3>您的博客编辑成功!</h3>
-      <div id="preview">
-        <h3>博客预览</h3>
-        <p>博客标题: {{blog.title}}</p>
-        <p>博客内容:</p>
-        <article>{{blog.content}}</article>
-        <p>博客分类:</p>
-        <ul>
-          <li v-for="category in blog.categories" :key="category">{{category}}</li>
-        </ul>
-        <p>作者：{{blog.author}}</p>
-      </div>
     </div>
   </div>
 </template>

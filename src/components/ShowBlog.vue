@@ -14,7 +14,7 @@
           <article>{{blog.content | snippet}}</article>
         </router-link>
       </div>
-      <div class="load-more" v-show="blur && !zero">
+      <div class="load-more" v-show="blur && !zero" @click="loadMore">
         <span>{{noMoreBlog ? '没有更多了' : '点击加载更多'}}</span>
       </div>
       <div class="load-more" v-show="zero">
@@ -26,6 +26,7 @@
 <script>
 import Loading from './Loading'
 import axios from 'axios'
+import md from "markdown";
 export default {
   name: "ShowBlog",
   components: {
@@ -65,33 +66,23 @@ export default {
     }
   },
   methods: {
+    loadMore() {
+      this.fetchData(this.blogs.length)
+    },
     clear () {
       this.search = ''
     },
-    fetchData (count) {
-      // this.$http.get("https://vueblog-f782b.firebaseio.com/posts.json")
-      // axios.get("/posts.json")
-      // .then(res => {
-      //   return res.data
-      // }).then(res => {
-      //   let blogsArray = []
-      //   for (let key in res) {
-      //     res[key].id = key
-      //     blogsArray.push(res[key])
-      //   }
-      //   this.blogs = blogsArray
-      //   this.isLoading = false
-        // console.log('isLoading', this.isLoading);
-      // })
+    fetchData (position) {
       const query = this.$Bmob.Query("posts");
-      query.limit(count)
-      query.order("-createdAt", 'desc')
+      query.skip(position)
+      query.limit(5)
+      query.order("-createdAt")
       query.find()
         .then(res => {
           // console.log('res', res);
-          this.blogs = res
+          this.blogs = this.blogs.concat(res)
           this.isLoading = false
-          if(res.length < count) {
+          if(res.length < 5) {
             this.noMoreBlog = true
           }
         });
@@ -99,7 +90,8 @@ export default {
   },
   created () {
     // 每次加载 5 条数据
-    this.fetchData(5)
+    this.fetchData(0)
+    // console.log('md.markdown', md.markdown);
   },
   activated() {
     
