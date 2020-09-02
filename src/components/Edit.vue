@@ -1,28 +1,23 @@
 <template>
   <div class="add-blog">
     <form v-show="!submitted" class="form" ref="form">
-      <h1>编辑博客</h1>
+      <h1>添加博客</h1>
       <label for="title" class="title">博客标题：</label>
       <br />
-      <input
-        type="text"
-        v-model="blog.title"
-        required
-        id="title"
-        placeholder="Type blog title here..."
-      />
+      <input type="text" v-model="blog.title" required id="title" placeholder="Type blog title here..."/>
       <div class="content-box">
         <label for="content" class="content">博客内容：</label>
         <span class="preview-btn" @click="togglePreview">{{isPreview ? '关闭预览' : '打开预览'}}</span>
       </div>
-      <textarea
+      <textarea 
         id="content"
         placeholder="Type your blog content here..."
-        v-model="blog.content"
+        v-model="blog.content" 
         ref="input"
-        rows="6"
+        rows="6" 
         cols="60"
-      ></textarea>
+      >
+      </textarea>
 
       <div id="checkbox">
         <label>分类：</label>
@@ -46,17 +41,17 @@
           </select>
         </div>
 
-        <button class="btn" @click.prevent="put">保存</button>
+        <button class="btn" @click.prevent="post">发布</button>
       </div>
     </form>
     <div v-show="isPreview" id="preview">
-      <div class="preview-content-wrapper">
+      <div class="preview-content-wrapper" >
         <h2>{{this.blog.title}}</h2>
         <div ref="preview" class="preview-content"></div>
       </div>
     </div>
     <div v-show="submitted" class="preview_wrapper">
-      <h3>您的博客已修改成功!</h3>
+      <h3>您的博客已发布成功!</h3>
     </div>
   </div>
 </template>
@@ -65,11 +60,15 @@ import axios from "axios";
 export default {
   name: "AddBlog",
   components: {},
-  props: {},
+  props: {
+    action: {
+      type: Object,
+      default: "post"
+    }
+  },
   data() {
     return {
       isPreview: false,
-      id: this.$route.params.id,
       blog: {
         title: "",
         content: "",
@@ -84,37 +83,48 @@ export default {
     togglePreview () {
       this.isPreview = !this.isPreview
     },
-    put() {
+    post() {
+      if (
+        this.blog.title === "" &&
+        this.blog.content === "" &&
+        this.blog.categories.length === 0 &&
+        this.blog.author === ""
+      ) {
+        alert("你不能发布空的博客")
+        return
+      }
       const query = this.$Bmob.Query("posts");
-      query.set("id", this.id); //需要修改的objectId
       query.set("title", this.blog.title);
       query.set("content", this.blog.content);
       query.set("title", this.blog.title);
       query.set("categories", this.blog.categories);
       query.set("author", this.blog.author);
+      query.save().then((res) => {
+        console.log("res", res);
+        this.submitted = true;
+        this.$eventBus.$emit("publishBlog");
+        this.isPreview = false
+      });
+    },
+    put() {
+      const query = this.$Bmob.Query("posts");
+      query.set("id", this.id); //需要修改的objectId
+      query.set('title', this.blog.title)
+      query.set('content', this.blog.content)
+      query.set('title', this.blog.title)
+      query.set('categories', this.blog.categories)
+      query.set('author', this.blog.author)
       query
         .save()
         .then((res) => {
-          // console.log(res);
+          console.log(res);
           this.submitted = true;
-          this.$eventBus.$emit("editToUpdate");
-          this.isPreview = false
+          this.$eventBus.$emit('editToUpdate')
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    fetchData() {
-      const query = this.$Bmob.Query("posts");
-      query.get(this.id).then((res) => {
-        this.blog = res;
-        this.$refs.preview.innerHTML = this.blog.content
-        
-      });
-    },
-  },
-  created() {
-    this.fetchData();
   },
   mounted() {
     let input = this.$refs.input
@@ -190,7 +200,6 @@ label.title {
 .preview-content-wrapper {
   position: absolute;
   padding-top: 80px;
-  padding-bottom: 40px;
   padding-left: 40px;
   padding-right: 40px;
   right: 0;

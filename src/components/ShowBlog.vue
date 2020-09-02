@@ -66,6 +66,19 @@ export default {
     }
   },
   methods: {
+    refreshData() {
+      const query = this.$Bmob.Query("posts");
+      query.limit(5)
+      query.order("-createdAt")
+      query.find()
+        .then(res => {
+          this.blogs = res
+          this.isLoading = false
+          if(res.length < 5) {
+            this.noMoreBlog = true
+          }
+        });
+    },
     loadMore() {
       this.fetchData(this.blogs.length)
     },
@@ -82,14 +95,17 @@ export default {
           // console.log('res', res);
           this.blogs = this.blogs.concat(res)
           this.isLoading = false
-          if(res.length < 5) {
+          if (res.length < 5) {
             this.noMoreBlog = true
+          } else {
+            this.noMoreBlog = false
           }
         });
     }
   },
   created () {
     // 每次加载 5 条数据
+    // 从第0条开始
     this.fetchData(0)
     // console.log('md.markdown', md.markdown);
   },
@@ -102,11 +118,11 @@ export default {
   mounted () {
     this.$eventBus.$on('editToUpdate', () => {
       console.log('editToUpdate');
-      this.fetchData(5)
+      this.refreshData()
     })
     this.$eventBus.$on('publishBlog', () => {
       console.log('publishBlog');
-      this.fetchData(5)
+      this.refreshData()
     })
     this.$refs.inputFocus.onfocus = () => {
       this.blur = false

@@ -4,7 +4,7 @@
       <h1>添加博客</h1>
       <label for="title" class="title">博客标题：</label>
       <br />
-      <input type="text" v-model="blog.title" required id="title" placeholder="Type title here..."/>
+      <input type="text" v-model="blog.title" required id="title" placeholder="Type your blog title here..."/>
       <div class="content-box">
         <label for="content" class="content">博客内容：</label>
         <span class="preview-btn" @click="togglePreview">{{isPreview ? '关闭预览' : '打开预览'}}</span>
@@ -57,7 +57,7 @@
 </template>
 <script>
 import axios from "axios";
-// import md from "markdown";
+import md from "markdown";
 export default {
   name: "AddBlog",
   components: {},
@@ -108,6 +108,7 @@ export default {
     let preview = this.$refs.preview
     input.oninput = () => {
       preview.innerHTML = input.value.replace(/\n/g, '<br/>');
+      // preview.innerHTML = md.markdown.toHTML(input.value);
     }
   },
 };
@@ -175,6 +176,7 @@ label.title {
   background-color: #eee;
 }
 .preview-content-wrapper {
+  padding-bottom: 40px;
   position: absolute;
   padding-top: 80px;
   padding-left: 40px;

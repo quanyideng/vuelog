@@ -8,6 +8,10 @@ import routes from './routes'
 import axios from 'axios'
 import Bmob from "hydrogen-js-sdk";
 import './icon/style.css'
+import VuejsDialog from 'vuejs-dialog';
+import 'vuejs-dialog/dist/vuejs-dialog.min.css';
+
+Vue.use(VuejsDialog);
 
 Bmob.initialize("4d9617821246628a", "703458");
 Vue.prototype.$Bmob = Bmob

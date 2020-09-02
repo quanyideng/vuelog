@@ -3,7 +3,7 @@
     <Loading :loading="loading" />
     <div id="blog" v-show="showBlog">
       <h1>{{blog.title}}</h1>
-      <div ref="content" class="content"></div>
+      <article ref="content" class="content"></article>
       <p>作者： {{blog.author}}</p>
       <p>分类：</p>
       <ul>
@@ -34,29 +34,34 @@ export default {
   },
   methods: {
     deleteBlog() {
-      const query = this.$Bmob.Query("posts");
-      query
-        .destroy(this.id)
-        .then((res) => {
-          console.log("res", res);
-          console.log("deleted successfully");
-          this.$eventBus.$emit("editToUpdate");
-          this.$router.push({ path: "/" });
+      this.$dialog
+        .confirm("确定要删除吗？删除后，数据不可恢复！")
+        .then( (dialog) => {
+          console.log("确认");
+          const query = this.$Bmob.Query("posts");
+          query
+            .destroy(this.id)
+            .then((res) => {
+              this.$eventBus.$emit("editToUpdate");
+              this.$router.push({ path: "/" });
+            })
+            .catch((err) => {
+              console.log("err", err);
+            });
         })
-        .catch((err) => {
-          console.log("err", err);
+        .catch( () => {
+          console.log("取消");
         });
     },
   },
   created() {
     const query = this.$Bmob.Query("posts");
-    query.get(this.id)
-    .then((res) => {
-      console.log("res", res);
+    query.get(this.id).then((res) => {
       this.blog = res;
       this.showBlog = true;
       this.loading = false;
-      this.$refs.content.innerHTML = md.markdown.toHTML(this.blog.content)
+      // this.$refs.content.innerHTML = this.blog.content
+      this.$refs.content.innerHTML = md.markdown.toHTML(this.blog.content);
     });
   },
 };
@@ -76,14 +81,16 @@ export default {
 .content {
   height: auto;
   width: auto;
-  padding: 0 10px;
-  line-height: 1.5;
+  padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
   box-shadow: 1px 1px 10px #999;
   background: #fff;
   margin-bottom: 20px;
-  letter-spacing: 1px;
-  font-size: .8rem;
+  margin-top: 20px;
+  font-size: 1rem;
+  text-align: justify;
+  letter-spacing: 2px;
+  line-height: 1.5;
 }
 </style>
