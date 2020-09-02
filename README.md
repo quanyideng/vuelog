@@ -4,7 +4,7 @@
 
 <h1 align="center">vuelog</h1>
 
-一个使用 `bmob` + `vue-cli` + `npm` 的简单博客，带有文章发布，查看，删除和修改等功能
+一个使用 `bmob` + `vue-cli` + `npm` 的简单博客，带有文章发布，搜索，查看，删除和修改等功能
 
 技术栈 `Vue`+`Vue-Cli`+`Bmob`+`Vue-router`
 
@@ -25,6 +25,8 @@
 
 [✔] 操作提示信息
 
+[✔] 文章搜索
+
 
 ## 使用规范
 
@@ -42,12 +44,12 @@ Bmob.initialize(
 );
 ```
 
-### 开始
+### 开始，安装依赖
 ``` javascrip
 npm install
 ```
 
-### 启动
+### 启动项目
 ``` javascript
 npm start
 ```
@@ -78,3 +80,7 @@ npm run build
 **删除博客**
 
 ![delete](https://s1.ax1x.com/2020/09/02/wSvD9s.png)
+
+**搜索博客**
+
+![search](https://s1.ax1x.com/2020/09/02/wp9smt.png)
