@@ -9,7 +9,7 @@
 技术栈 `Vue`+`Vue-Cli`+`Bmob`+`Vue-router`
 
 ### 在线预览
-[在线预览](http://crazy.lovemysoul.vip/gitdemo/bmob-vue)
+[在线预览](https://quanyideng.github.io/projects/vue/vuelog/index.html)
 
 ### 已实现功能
 
